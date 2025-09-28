@@ -6,7 +6,7 @@ import Signup from "./Components/Signup";
 import Signin from "./Components/Signin";
 import Verifyotp from "./Components/Verifyotp";
 import { useOnClickOutside } from "./useOnClickOutside";
-
+import Footer from "./Components/Footer";
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -45,7 +45,7 @@ export default function App() {
         {/* User Menu */}
         <div className="relative">
           <button onClick={() => setUserMenuOpen(!userMenuOpen)}>
-            <FaUserCircle className="text-2xl text-gray-300 hover:text-blue-400 transition-colors duration-300" />
+            <FaUserCircle className="text-4xl text-gray-300 hover:text-blue-400 transition-colors duration-300 cursor-pointer" />
           </button>
 
           {/* Dropdown */}
@@ -68,6 +68,13 @@ export default function App() {
               className="px-4 py-3 text-center hover:bg-blue-600/20 cursor-pointer"
             >
               Sign Up
+            </p>
+            <div className="border-t border-white/20" />
+            <p
+              onClick={() => handleNavigation("/my-profile")}
+              className="px-4 py-3 text-center hover:bg-blue-600/20 cursor-pointer"
+            >
+              My Profile
             </p>
           </div>
         </div>
@@ -119,6 +126,7 @@ export default function App() {
 
       {/* Main Content */}
       <main className="h-[calc(100vh-76px)] overflow-y-auto flex flex-col items-center justify-center px-4">
+       
         <Routes>
           {/* Default Home */}
           <Route
@@ -131,20 +139,7 @@ export default function App() {
                 <p className="text-gray-300">
                   Join the ultimate platform for IIT KGP juniors. Access lectures, previous year questions, formula sheets, and community discussions all in one place.
                 </p>
-                <div className="flex space-x-4 mt-4">
-                  <button
-                    onClick={() => handleNavigation("/signup")}
-                    className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 font-semibold transition-all"
-                  >
-                    Sign Up
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/signin")}
-                    className="px-6 py-3 rounded-lg border border-blue-500 text-blue-400 hover:text-white hover:bg-blue-600 font-semibold transition-all"
-                  >
-                    Sign In
-                  </button>
-                </div>
+               
               </div>
             }
           />
@@ -152,7 +147,9 @@ export default function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/verify-otp" element={<Verifyotp />} />
         </Routes>
+         <Footer />
       </main>
+      
     </div>
   );
 }
