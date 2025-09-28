@@ -5,8 +5,10 @@ import { FaBars, FaUserCircle, FaTimes } from "react-icons/fa";
 import Signup from "./Components/Signup";
 import Signin from "./Components/Signin";
 import Verifyotp from "./Components/Verifyotp";
-import { useOnClickOutside } from "./useOnClickOutside";
 import Footer from "./Components/Footer";
+import { useOnClickOutside } from "./useOnClickOutside";
+import { Typewriter } from "react-simple-typewriter";
+
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -104,10 +106,10 @@ export default function App() {
             Home
           </li>
           <li
-            onClick={() => handleNavigation("/courses")}
+            onClick={() => handleNavigation("/pyq")}
             className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors"
           >
-            Courses
+            PYQ Archive
           </li>
           <li
             onClick={() => handleNavigation("/community")}
@@ -116,30 +118,68 @@ export default function App() {
             Community
           </li>
           <li
-            onClick={() => handleNavigation("/placements")}
+            onClick={() => handleNavigation("/material")}
             className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors"
           >
-            Placements
+            Study Material
           </li>
         </ul>
       </aside>
 
       {/* Main Content */}
       <main className="h-[calc(100vh-76px)] overflow-y-auto flex flex-col items-center justify-center px-4">
-       
         <Routes>
           {/* Default Home */}
           <Route
             path="/"
             element={
               <div className="flex flex-col items-center justify-center text-center space-y-6 max-w-xl">
+                {/* Animated title */}
                 <h1 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
-                  Welcome to CHE 2024
+                  <Typewriter
+                    words={["Welcome to CHE 2024"]}
+                    loop={1}
+                    cursor
+                    cursorStyle="|"
+                    typeSpeed={150}
+                    deleteSpeed={80}
+                    delaySpeed={3000}
+                  />
                 </h1>
-                <p className="text-gray-300">
-                  Join the ultimate platform for IIT KGP juniors. Access lectures, previous year questions, formula sheets, and community discussions all in one place.
+
+                {/* Animated paragraphs */}
+                <p className="text-gray-300 text-lg">
+                  <Typewriter
+                    words={[
+                      "Join the ultimate platform for IIT KGP juniors.",
+                      "Access lectures, previous year questions, and formula sheets.",
+                      "Participate in discussions and community events.",
+                      "Prepare effectively for placements with senior tips."
+                    ]}
+                    loop={0}
+                    cursor
+                    cursorStyle="|"
+                    typeSpeed={80}
+                    deleteSpeed={50}
+                    delaySpeed={2500}
+                  />
                 </p>
-               
+
+                {/* Buttons */}
+                <div className="flex space-x-4 mt-4">
+                  <button
+                    onClick={() => handleNavigation("/signup")}
+                    className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 font-semibold transition-all"
+                  >
+                    Get Started
+                  </button>
+                  <button
+                    onClick={() => handleNavigation("/pyq")}
+                    className="px-6 py-3 rounded-lg border border-blue-500 text-blue-400 hover:text-white hover:bg-blue-600 font-semibold transition-all"
+                  >
+                    Learn More
+                  </button>
+                </div>
               </div>
             }
           />
@@ -147,9 +187,9 @@ export default function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/verify-otp" element={<Verifyotp />} />
         </Routes>
-         <Footer />
+
+        <Footer />
       </main>
-      
     </div>
   );
 }

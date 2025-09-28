@@ -1,6 +1,6 @@
 // src/Components/Footer.jsx
 import React from 'react';
-import { FaInstagram, FaEnvelope, FaGithub } from 'react-icons/fa';
+import { FaInstagram, FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -15,11 +15,14 @@ const Footer = () => {
         <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors">
           <FaInstagram />
         </a>
-        <a href="mailto:youremail@example.com" className="hover:text-yellow-400 transition-colors">
+        <a href="mailto:rajdipsaha7697@gmail.com" className="hover:text-yellow-400 transition-colors">
           <FaEnvelope />
         </a>
         <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-100 transition-colors">
           <FaGithub />
+        </a>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors">
+          <FaLinkedin />
         </a>
       </div>
     </footer>
