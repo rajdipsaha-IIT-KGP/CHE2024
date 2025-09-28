@@ -6,7 +6,7 @@ const nodemailer = require("nodemailer");
 
 const { usermodel } = require("../db");
 const otpModel = require("../models/otpModel");
-
+let user;
 const userRouter = Router();
 const JWT_SECRET = "rajdipsaha";
 
@@ -25,7 +25,23 @@ async function sendOtpEmail(toEmail, otp) {
       from: "rajdipsaha7697@gmail.com",
       to: toEmail,
       subject: "CHE 2024 - Your OTP Code",
-      text: `Thanks for joining CHE 2024. Your OTP is ${otp}. It is valid for 10 minutes.`,
+      text: `Hello ${user},
+
+Thank you for signing up for CHE 2024!
+
+Your One-Time Password (OTP) is:
+
+          ${otp}
+
+This OTP is valid for 10 minutes. Please do not share it with anyone.
+
+If you did not request this OTP, you can safely ignore this email.
+
+Welcome to CHE 2024, and we’re excited to have you on board!
+
+Best regards,
+The CHE 2024 Team
+`,
     });
 
     console.log("✅ OTP sent successfully to", toEmail);
@@ -38,6 +54,7 @@ async function sendOtpEmail(toEmail, otp) {
 userRouter.post("/signup/send-otp", async (req, res) => {
   try {
     const { email, username, password } = req.body || {};
+    user = username;
     if (!email || !username || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
