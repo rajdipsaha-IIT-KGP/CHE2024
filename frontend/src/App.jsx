@@ -1,4 +1,4 @@
-// src/App.jsx
+
 import React, { useState, useRef, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { FaBars, FaUserCircle } from "react-icons/fa";
