@@ -15,7 +15,7 @@ const Footer = () => {
         <a href="mailto:rajdipsaha7697@gmail.com" className="hover:text-yellow-400 transition-colors">
           <FaEnvelope />
         </a>
-        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="hover:text-gray-100 transition-colors">
+        <a href="https://github.com/rajdipsaha-IIT-KGP" target="_blank" rel="noopener noreferrer" className="hover:text-gray-100 transition-colors">
           <FaGithub />
         </a>
         <a href="https://www.linkedin.com/in/rajdip-saha-07371431a/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors">

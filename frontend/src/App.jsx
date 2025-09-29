@@ -9,6 +9,7 @@ import Footer from "./Components/Footer";
 import { useOnClickOutside } from "./useOnClickOutside";
 import { Typewriter } from "react-simple-typewriter";
 import PYQ from "./Components/Pyq";
+import About from "./Components/About";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -63,7 +64,7 @@ export default function App() {
         {/* Hamburger */}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="text-2xl text-gray-300 hover:text-blue-400 transition-colors duration-300"
+          className="text-2xl text-gray-300 hover:text-blue-400 transition-colors duration-300 cursor-poiner"
         >
           <FaBars />
         </button>
@@ -110,7 +111,7 @@ export default function App() {
       <aside
         ref={sidebarRef}
         className={`fixed top-0 left-0 h-full w-64 bg-gray-900/80 backdrop-blur-lg ring-1 ring-white/10 transform transition-transform duration-300 ease-in-out z-50 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          sidebarOpen ? "translate-x-0" : "-translate-x-full cursor-pointer"
         }`}
       >
         <ul className="flex flex-col p-4 space-y-2 my-15">
@@ -137,6 +138,13 @@ export default function App() {
             className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
           >
             Study Material
+          </li>
+          <div className="border-t border-white/20 " />
+          <li
+            onClick={() => handleNavigation("/about")}
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center  font-bold"
+          >
+            About Us
           </li>
         </ul>
       </aside>
@@ -185,7 +193,7 @@ export default function App() {
                     Get Started
                   </button>
                   <button
-                    onClick={() => handleNavigation("/pyq")}
+                    onClick={() => handleNavigation("/about")}
                     className="px-6 py-3 rounded-lg border border-blue-500 text-blue-400 hover:text-white hover:bg-blue-600 font-semibold transition-all"
                   >
                     Learn More
@@ -198,6 +206,7 @@ export default function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/verify-otp" element={<Verifyotp />} />
           <Route path="/pyq" element={<PYQ />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
 

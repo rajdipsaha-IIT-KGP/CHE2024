@@ -51,7 +51,42 @@ const Pyq = () => {
       },
     ],
   },
-  // same for 3rd, 4th year...;
+  {
+    name: "3rd Year",
+    semesters: [
+      {
+        name: "Semester 5",
+        subjects: [
+          { name: "Thermodynamics", link: "https://drive.google.com/thermo-link" },
+          { name: "Fluid Mechanics", link: "https://drive.google.com/fluid-link" },
+        ],
+      },
+      {
+        name: "Semester 6",
+        subjects: [
+          { name: "Material Science", link: "https://drive.google.com/material-link" },
+        ],
+      },
+    ],
+  },
+  {
+    name: "4th Year",
+    semesters: [
+      {
+        name: "Semester 7",
+        subjects: [
+          { name: "Thermodynamics", link: "https://drive.google.com/thermo-link" },
+          { name: "Fluid Mechanics", link: "https://drive.google.com/fluid-link" },
+        ],
+      },
+      {
+        name: "Semester 8",
+        subjects: [
+          { name: "Material Science", link: "https://drive.google.com/material-link" },
+        ],
+      },
+    ],
+  },
 ]
 
   return (
