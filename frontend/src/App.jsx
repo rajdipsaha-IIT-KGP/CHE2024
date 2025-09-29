@@ -1,24 +1,35 @@
 // src/App.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { FaBars, FaUserCircle, FaTimes } from "react-icons/fa";
+import { FaBars, FaUserCircle } from "react-icons/fa";
 import Signup from "./Components/Signup";
 import Signin from "./Components/Signin";
 import Verifyotp from "./Components/Verifyotp";
 import Footer from "./Components/Footer";
 import { useOnClickOutside } from "./useOnClickOutside";
 import { Typewriter } from "react-simple-typewriter";
+import PYQ from "./Components/Pyq";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const navigate = useNavigate();
-
   const sidebarRef = useRef();
   const userMenuRef = useRef();
 
   useOnClickOutside(sidebarRef, () => setSidebarOpen(false));
   useOnClickOutside(userMenuRef, () => setUserMenuOpen(false));
+
+  const loginStatus = () => {
+    let token = localStorage.getItem("token");
+    if (!token) toast.error("Please login first");
+  };
+
+  useEffect(() => {
+    loginStatus();
+  }, []);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -26,10 +37,23 @@ export default function App() {
     setUserMenuOpen(false);
   };
 
+  const handleProfileNavigation = () => {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login first");
+      navigate("/signin");
+      toast.info("Redirecting to Sign In page");
+      return;
+    }
+    handleNavigation("/my-profile");
+  };
+
   return (
-    <div className="h-screen w-screen text-white overflow-hidden relative bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-gray-900 text-white overflow-x-hidden relative">
       {/* Gradient background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700" />
+
+      <ToastContainer position="top-right" autoClose={2000} />
 
       {/* Top Bar */}
       <header
@@ -52,7 +76,7 @@ export default function App() {
 
           {/* Dropdown */}
           <div
-            className={`absolute right-0 mt-3 w-48 bg-gray-800/80 backdrop-blur-lg rounded-lg shadow-xl text-gray-200 overflow-hidden ring-1 ring-white/10 transition-all duration-300 ease-in-out ${
+            className={`absolute right-0 mt-3 w-48 bg-gray-800/80 backdrop-blur-lg rounded-lg shadow-xl text-gray-200 overflow-auto ring-1 ring-white/10 transition-all duration-300 ease-in-out ${
               userMenuOpen
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 -translate-y-4 pointer-events-none"
@@ -73,7 +97,7 @@ export default function App() {
             </p>
             <div className="border-t border-white/20" />
             <p
-              onClick={() => handleNavigation("/my-profile")}
+              onClick={handleProfileNavigation}
               className="px-4 py-3 text-center hover:bg-blue-600/20 cursor-pointer"
             >
               My Profile
@@ -89,52 +113,41 @@ export default function App() {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex justify-between items-center p-4 border-b border-white/10">
-          <h2 className="text-2xl font-bold">Menu</h2>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="text-2xl text-gray-300 hover:text-blue-400"
-          >
-            <FaTimes />
-          </button>
-        </div>
-        <ul className="flex flex-col p-4 space-y-2">
+        <ul className="flex flex-col p-4 space-y-2 my-15">
           <li
             onClick={() => handleNavigation("/")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
           >
             Home
           </li>
           <li
             onClick={() => handleNavigation("/pyq")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
           >
             PYQ Archive
           </li>
           <li
             onClick={() => handleNavigation("/community")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
           >
             Community
           </li>
           <li
             onClick={() => handleNavigation("/material")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
           >
             Study Material
           </li>
         </ul>
       </aside>
 
-      {/* Main Content */}
-      <main className="h-[calc(100vh-76px)] overflow-y-auto flex flex-col items-center justify-center px-4">
+      {/* Main content grows to fill available space */}
+      <main className="flex-1 flex flex-col items-center px-4 w-full">
         <Routes>
-          {/* Default Home */}
           <Route
             path="/"
             element={
               <div className="flex flex-col items-center justify-center text-center space-y-6 max-w-xl">
-                {/* Animated title */}
                 <h1 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
                   <Typewriter
                     words={["Welcome to CHE 2024"]}
@@ -147,14 +160,13 @@ export default function App() {
                   />
                 </h1>
 
-                {/* Animated paragraphs */}
                 <p className="text-gray-300 text-lg">
                   <Typewriter
                     words={[
                       "Join the ultimate platform for IIT KGP juniors.",
                       "Access lectures, previous year questions, and formula sheets.",
                       "Participate in discussions and community events.",
-                      "Prepare effectively for placements with senior tips."
+                      "Prepare effectively for placements with senior tips.",
                     ]}
                     loop={0}
                     cursor
@@ -165,7 +177,6 @@ export default function App() {
                   />
                 </p>
 
-                {/* Buttons */}
                 <div className="flex space-x-4 mt-4">
                   <button
                     onClick={() => handleNavigation("/signup")}
@@ -186,10 +197,12 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/verify-otp" element={<Verifyotp />} />
+          <Route path="/pyq" element={<PYQ />} />
         </Routes>
-
-        <Footer />
       </main>
+
+      {/* Footer always at bottom */}
+      <Footer />
     </div>
   );
 }

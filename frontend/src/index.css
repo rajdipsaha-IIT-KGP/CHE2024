@@ -1,1 +1,11 @@
 @import "tailwindcss";
+html, body, #root {
+  height: auto;       /* allow height to expand with content */
+  min-height: 100%;   /* optional, ensures body fills screen */
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;   /* enables vertical scrolling */
+  background-color: #000; /* if you want black background */
+  color: white;          /* default text color */
+  font-family: sans-serif;
+}

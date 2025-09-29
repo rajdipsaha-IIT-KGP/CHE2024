@@ -20,11 +20,12 @@ const Signup = () => {
 
       setLoading(true);
       const res = await axios.post("http://localhost:3000/user/signup/send-otp", {
-        email, username, password
+        email, username, password 
       });
 
       toast.success(res.data.message || "OTP sent successfully");
       localStorage.setItem("signupEmail", email);
+      localStorage.setItem("token", res.data.token);
       navigate('/verify-otp');
     } catch (error) {
       console.error(error);
