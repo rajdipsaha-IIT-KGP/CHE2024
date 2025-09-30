@@ -25,7 +25,7 @@ const Verifyotp = () => {
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:3000/user/signup/verify-otp", {
+      const res = await axios.post("https://che2024.onrender.com/user/signup/verify-otp", {
         email,
         otp,
       });

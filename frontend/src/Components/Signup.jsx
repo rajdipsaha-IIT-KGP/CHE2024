@@ -19,7 +19,7 @@ const Signup = () => {
       }
 
       setLoading(true);
-      const res = await axios.post("http://localhost:3000/user/signup/send-otp", {
+      const res = await axios.post("https://che2024.onrender.com/user/signup/send-otp", {
         email, username, password 
       });
 
