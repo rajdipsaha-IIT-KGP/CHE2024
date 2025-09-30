@@ -11,7 +11,7 @@ const Pyq = () => {
         name: "Semester 1",
         subjects: [
           { name: "Advanced Calculus", link: "https://drive.google.com/maths-link" },
-          { name: "Basic Engineering Mechanics", link: "https://drive.google.com/physics-link" },
+          { name: "Basic Engineering Mechanics", link: "https://drive.google.com/drive/folders/106jhSCn14WbX0wXYzRwJD222pBxhZEW3" },
           {
             name:"Chemical Process Calculations",
             link:"https://drive.google.com/chem-process-link"

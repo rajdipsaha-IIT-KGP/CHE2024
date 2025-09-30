@@ -10,6 +10,7 @@ import { useOnClickOutside } from "./useOnClickOutside";
 import { Typewriter } from "react-simple-typewriter";
 import PYQ from "./Components/Pyq";
 import About from "./Components/About";
+import Elective from "./Components/Elective";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -139,6 +140,12 @@ export default function App() {
           >
             Study Material
           </li>
+            <li
+            onClick={() => handleNavigation("/elective")}
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
+          >
+            Elective
+          </li>
           <div className="border-t border-white/20 " />
           <li
             onClick={() => handleNavigation("/about")}
@@ -207,6 +214,7 @@ export default function App() {
           <Route path="/verify-otp" element={<Verifyotp />} />
           <Route path="/pyq" element={<PYQ />} />
           <Route path="/about" element={<About />} />
+          <Route path="/elective" element={<Elective />} />
         </Routes>
       </main>
 

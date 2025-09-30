@@ -33,7 +33,7 @@ const Verifyotp = () => {
       if (res.data.message === "User verified and created successfully") {
         toast.success(res.data.message);
         localStorage.removeItem('signupEmail');
-        // navigate("/signin"); // go to signin page
+        // navigate("/signin"); 
       } else {
         toast.error(res.data.message);
       }
@@ -46,7 +46,7 @@ const Verifyotp = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700">
+    <div className="h-screen flex items-center justify-center ">
       <div className="w-full max-w-md p-8 bg-gray-900/80 backdrop-blur-md rounded-2xl shadow-xl text-white">
         <h2 className="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
           Verify OTP
@@ -57,7 +57,7 @@ const Verifyotp = () => {
             type="email"
             value={email}
             disabled
-            className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-400"
+            className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-gray-400 cursor-not-allowed"
           />
 
           <input
