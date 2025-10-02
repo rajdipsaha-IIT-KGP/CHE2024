@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "rajdipsaha";
 // ------------------ Helper to send OTP email ------------------
 async function sendOtpEmail(toEmail, otp) {
   try {
-    // Use SendGrid SMTP
+    
     let transporter = nodemailer.createTransport({
       host: "smtp.sendgrid.net",
       port: 587,
