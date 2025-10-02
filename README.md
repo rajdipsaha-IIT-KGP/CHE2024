@@ -33,24 +33,30 @@ It provides a centralized hub for **NPTEL lectures, previous year questions, for
 ## 🛠️ Tech Stack
 
 ### Frontend
-- ⚡ [Vite](https://vitejs.dev/) + [React](https://react.dev/)
-- 🎨 TailwindCSS (or Custom CSS later)
-- 📚 Redux Toolkit (for state management)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
 
 ### Backend
-- 🌐 [Express.js](https://expressjs.com/) (Node.js)
-- 🗄️ MongoDB (Mongoose ORM)
-- 🔑 JWT Authentication
-- 📧 Nodemailer (for email OTPs / notifications)
-- 🔒 Bcrypt (for password hashing)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)
 
-### Real-time
-- 🛰️ WebSockets (chat & live updates)
+### Security & Auth
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![Bcrypt](https://img.shields.io/badge/Bcrypt-00BFFF?style=for-the-badge&logo=auth0&logoColor=white)
+
+### Communication
+![WebSockets](https://img.shields.io/badge/WebSockets-010101?style=for-the-badge&logo=socket.io&logoColor=white)
+![Nodemailer](https://img.shields.io/badge/Nodemailer-0078D4?style=for-the-badge&logo=gmail&logoColor=white)
 
 ### Deployment
-- 🌍 Frontend → Vercel
-- 🔧 Backend → Render/Heroku
-- ☁️ Database → MongoDB Atlas
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+![MongoDB Atlas](https://img.shields.io/badge/MongoDB_Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+
 
 ---
 
@@ -59,6 +65,7 @@ It provides a centralized hub for **NPTEL lectures, previous year questions, for
 ---
 
 ## ⚙️ Installation
+
 
 ### 1. Clone Repository
 ```bash
