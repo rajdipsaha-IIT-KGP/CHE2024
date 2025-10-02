@@ -67,6 +67,153 @@ const electives = [
       },
     ],
   },
+  {
+    name: "Algorithm-II",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },
+  {
+    name: "Petroleum Engineering",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },{
+    name: "Physical Education",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },
+  {
+    name: "Fine Arts",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },{
+    name: "Data Science",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },{
+    name: "Cyber Security",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },{
+    name: "Cloud Computing",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },{
+    name: "Artificial Intelligence",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  },{
+    name: "Machine Learning",
+    content: [
+      {
+        name: "Content",
+        description:
+          "Introduction to fundamental algorithms and data structures. Covers sorting, searching, recursion, greedy methods, and dynamic programming. Focus on analyzing time and space complexity to evaluate algorithm efficiency. Practical problem-solving using C++/Java/Python.",
+      },
+    ],
+    grading: [
+      {
+        name: "Grading System",
+        description:
+          "Moderately strict grading. Emphasis on coding assignments and exams. Lowest grade usually is B.",
+      },
+    ],
+  }
 ];
 
 export default electives;

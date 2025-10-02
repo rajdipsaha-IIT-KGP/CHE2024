@@ -8,21 +8,23 @@ const { usermodel } = require("../db");
 const otpModel = require("../models/otpModel");
 let user;
 const userRouter = Router();
-const JWT_SECRET = "rajdipsaha";
+const JWT_SECRET = process.env.JWT_SECRET || "rajdipsaha";
 
 // ------------------ Helper to send OTP email ------------------
 async function sendOtpEmail(toEmail, otp) {
   try {
+    // Use SendGrid SMTP
     let transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.sendgrid.net",
+      port: 587,
       auth: {
-        user: "rajdipsaha7697@gmail.com",      
-        pass: "xsyi zewt ptwa tnnh",                    
+        user: "apikey", 
+        pass: "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", 
       },
     });
 
     await transporter.sendMail({
-      from: "rajdipsaha7697@gmail.com",
+      from: '"CHE 2024" <rajdipsaha7697@gmail.com>',
       to: toEmail,
       subject: "CHE 2024 - Your OTP Code",
       text: `Hello ${user},
