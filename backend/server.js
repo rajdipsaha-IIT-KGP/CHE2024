@@ -4,7 +4,7 @@ const { WebSocketServer } = require("ws");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const ChatMessage = require("./models/ChatMessage");
-const CommunityMember = require("./models/membersModel");
+const CommunityMember = require("./models/membersModels");
 
 const SECRET = "rajdipsaha";
 
