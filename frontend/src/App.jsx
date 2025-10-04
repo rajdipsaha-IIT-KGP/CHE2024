@@ -10,9 +10,11 @@ import { useOnClickOutside } from "./useOnClickOutside";
 import { Typewriter } from "react-simple-typewriter";
 import PYQ from "./Components/Pyq";
 import About from "./Components/About";
+import Community from "./Components/Community";
 import Elective from "./Components/Elective";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -215,6 +217,7 @@ export default function App() {
           <Route path="/pyq" element={<PYQ />} />
           <Route path="/about" element={<About />} />
           <Route path="/elective" element={<Elective />} />
+          <Route path = "/community" element ={<Community/>}/>
         </Routes>
       </main>
 

@@ -8,7 +8,7 @@ const { usermodel } = require("../db");
 const otpModel = require("../models/otpModel");
 let user;
 const userRouter = Router();
-const JWT_SECRET = process.env.JWT_SECRET || "rajdipsaha";
+const JWT_SECRET =  "rajdipsaha";
 
 // ------------------ Helper to send OTP email ------------------
 async function sendOtpEmail(toEmail, otp) {
