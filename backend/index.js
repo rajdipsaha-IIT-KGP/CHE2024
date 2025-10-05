@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const http = require("http");
 
 // Routes
 const userRouter = require("./Routes/user");
 const communityRouter = require("./Routes/community");
 
-
+// WebSocket server
 const { createCommunityServer } = require("./server");
 
 const app = express();
@@ -27,8 +28,11 @@ async function main() {
     );
     console.log("✅ MongoDB connected successfully");
 
-    // ------------------ HTTP + WS server ------------------
-    const server = createCommunityServer(app);
+    // ------------------ Create HTTP server ------------------
+    const server = http.createServer(app);
+
+    // ------------------ Attach WebSocket ------------------
+    createCommunityServer(server);
 
     const PORT = 3000;
     server.listen(PORT, () => {

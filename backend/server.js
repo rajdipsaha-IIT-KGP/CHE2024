@@ -1,92 +1,54 @@
-// server.js
-const http = require("http");
 const { WebSocketServer } = require("ws");
-const jwt = require("jsonwebtoken");
-const ChatMessage = require("./models/ChatMessage");
-const CommunityMember = require("./models/membersModels");
 
-const SECRET = "rajdipsaha";
+function createCommunityServer(server) {
+  const wss = new WebSocketServer({ server });
+  console.log("✅ WebSocket attached to Express server");
 
-function createCommunityServer(app) {
-  // -------------------- HTTP + WebSocket Server --------------------
-  const server = http.createServer(app); // attach express app
-  const wss = new WebSocketServer({ noServer: true });
+  wss.on("connection", (socket) => {
+    console.log("🔗 New client connected");
 
-  let allSockets = [];
-
-  // -------------------- Handle WS Connection --------------------
-  wss.on("connection", async (socket, user) => {
-    console.log(` ${user.username} connected`);
-
-    const history = await ChatMessage.find().sort({ timestamp: 1 });
-    socket.send(JSON.stringify({ type: "history", payload: history }));
-
-    allSockets.push({ socket, user });
-
-    allSockets.forEach(c => {
-      if (c.socket.readyState === 1 && c.socket !== socket) {
-        c.socket.send(JSON.stringify({ type: "userJoined", payload: { username: user.username } }));
-      }
-    });
-
-    socket.on("message", async (message) => {
+    socket.on("message", (message) => {
       try {
-        const data = JSON.parse(message);
+        const data = JSON.parse(message.toString());
+
+        if (data.type === "join") {
+          socket.username = data.username;
+          console.log(`👤 ${socket.username} joined`);
+          broadcast(wss, {
+            type: "notification",
+            message: `${socket.username} joined the chat`,
+          });
+        }
 
         if (data.type === "chat") {
-          const msg = {
-            sender: user.username,
-            message: data.payload.message,
-            timestamp: new Date(),
-          };
-
-          await ChatMessage.create(msg);
-
-          allSockets.forEach(c => {
-            if (c.socket.readyState === 1 && c.socket !== socket) {
-              c.socket.send(JSON.stringify({ type: "chat", payload: msg }));
-            }
+          broadcast(wss, {
+            type: "chat",
+            username: socket.username,
+            message: data.message,
           });
         }
       } catch (err) {
-        console.error(" Invalid WS message:", err);
+        console.error("❌ Error:", err);
       }
     });
 
     socket.on("close", () => {
-      console.log(` ${user.username} disconnected`);
-      allSockets = allSockets.filter(c => c.socket !== socket);
-
-      allSockets.forEach(c => {
-        if (c.socket.readyState === 1) {
-          c.socket.send(JSON.stringify({ type: "userLeft", payload: { username: user.username } }));
-        }
-      });
+      if (socket.username) {
+        broadcast(wss, {
+          type: "notification",
+          message: `${socket.username} left the chat`,
+        });
+      }
     });
   });
+}
 
-  // Handle WS Upgrade + JWT 
-  server.on("upgrade", (req, socket, head) => {
-    const url = new URL(req.url, `http://${req.headers.host}`);
-    const token = url.searchParams.get("token");
-
-    if (!token) {
-      socket.destroy();
-      return;
-    }
-
-    try {
-      const decoded = jwt.verify(token, SECRET);
-      wss.handleUpgrade(req, socket, head, (ws) => {
-        wss.emit("connection", ws, decoded);
-      });
-    } catch (err) {
-      console.log(" Invalid or missing token");
-      socket.destroy();
+function broadcast(wss, data) {
+  wss.clients.forEach((client) => {
+    if (client.readyState === 1) {
+      client.send(JSON.stringify(data));
     }
   });
-
-  return server;
 }
 
 module.exports = { createCommunityServer };
