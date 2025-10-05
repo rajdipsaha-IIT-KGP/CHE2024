@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { FaBars, FaUserCircle } from "react-icons/fa";
@@ -12,9 +11,8 @@ import PYQ from "./Components/Pyq";
 import About from "./Components/About";
 import Community from "./Components/Community";
 import Elective from "./Components/Elective";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
+import toast, { Toaster } from "react-hot-toast";
+;
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -31,8 +29,25 @@ export default function App() {
     if (!token) toast.error("Please login first");
   };
 
+  // ✅ Show welcome info toast on page load
   useEffect(() => {
-    loginStatus();
+    toast.success(
+      "Test Sign In:\nEmail: rajdipsaha7697@gmail.com (pass: 1234)\nEmail: ARADHANA.MOTORPARTS@GMAIL.COM(all capital letters) (pass: 1234)\nYou can test Community with these accounts.\nNote: Project is under development 🚧",
+      {
+        duration: 9000,
+        style: {
+          background: "#0f172a",
+          color: "#e2e8f0",
+          border: "1px solid #3b82f6",
+          fontSize: "14px",
+          lineHeight: "1.4",
+        },
+        iconTheme: {
+          primary: "#60a5fa",
+          secondary: "#0f172a",
+        },
+      }
+    );
   }, []);
 
   const handleNavigation = (path) => {
@@ -46,7 +61,13 @@ export default function App() {
     if (!token) {
       toast.error("Please login first");
       navigate("/signin");
-      toast.info("Redirecting to Sign In page");
+      toast("Redirecting to Sign In page...", {
+        icon: "➡️",
+        style: {
+          background: "#1e293b",
+          color: "#93c5fd",
+        },
+      });
       return;
     }
     handleNavigation("/my-profile");
@@ -54,10 +75,34 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 text-white overflow-x-hidden relative">
-      {/* Gradient background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700" />
-
-      <ToastContainer position="top-right" autoClose={2000} />
+      {/* Global Hot Toast setup */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: "#1E293B",
+            color: "#E2E8F0",
+            borderRadius: "8px",
+            border: "1px solid #334155",
+          },
+          success: {
+            iconTheme: {
+              primary: "#3B82F6",
+              secondary: "#1E293B",
+            },
+          },
+          error: {
+            style: {
+              background: "#7F1D1D",
+              color: "#FEE2E2",
+            },
+            iconTheme: {
+              primary: "#F87171",
+              secondary: "#7F1D1D",
+            },
+          },
+        }}
+      />
 
       {/* Top Bar */}
       <header
@@ -67,7 +112,7 @@ export default function App() {
         {/* Hamburger */}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="text-2xl text-gray-300 hover:text-blue-400 transition-colors duration-300 cursor-poiner"
+          className="text-2xl text-gray-300 hover:text-blue-400 transition-colors duration-300 cursor-pointer"
         >
           <FaBars />
         </button>
@@ -114,51 +159,51 @@ export default function App() {
       <aside
         ref={sidebarRef}
         className={`fixed top-0 left-0 h-full w-64 bg-gray-900/80 backdrop-blur-lg ring-1 ring-white/10 transform transition-transform duration-300 ease-in-out z-50 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full cursor-pointer"
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <ul className="flex flex-col p-4 space-y-2 my-15">
           <li
             onClick={() => handleNavigation("/")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer text-center"
           >
             Home
           </li>
           <li
             onClick={() => handleNavigation("/pyq")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer text-center"
           >
             PYQ Archive
           </li>
           <li
             onClick={() => handleNavigation("/community")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer text-center"
           >
             Community
           </li>
           <li
             onClick={() => handleNavigation("/material")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer text-center"
           >
             Study Material
           </li>
-            <li
+          <li
             onClick={() => handleNavigation("/elective")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer text-center"
           >
             Elective
           </li>
           <div className="border-t border-white/20 " />
           <li
             onClick={() => handleNavigation("/about")}
-            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer transition-colors text-center  font-bold"
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer text-center font-bold"
           >
             About Us
           </li>
         </ul>
       </aside>
 
-      {/* Main content grows to fill available space */}
+      {/* Main content */}
       <main className="flex-1 flex flex-col items-center px-4 w-full">
         <Routes>
           <Route
@@ -217,11 +262,10 @@ export default function App() {
           <Route path="/pyq" element={<PYQ />} />
           <Route path="/about" element={<About />} />
           <Route path="/elective" element={<Elective />} />
-          <Route path = "/community" element ={<Community/>}/>
+          <Route path="/community" element={<Community />} />
         </Routes>
       </main>
 
-      {/* Footer always at bottom */}
       <Footer />
     </div>
   );
