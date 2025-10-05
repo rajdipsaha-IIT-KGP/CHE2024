@@ -12,15 +12,13 @@ const { createCommunityServer } = require("./server");
 
 const app = express();
 
-// ------------------ Middleware ------------------
+
 app.use(cors());
 app.use(express.json());
 
-// ------------------ Routes ------------------
 app.use("/user", userRouter);
 app.use("/community", communityRouter);
 
-// ------------------ MongoDB Connection ------------------
 async function main() {
   try {
     await mongoose.connect(
@@ -28,10 +26,9 @@ async function main() {
     );
     console.log("✅ MongoDB connected successfully");
 
-    // ------------------ Create HTTP server ------------------
+   
     const server = http.createServer(app);
 
-    // ------------------ Attach WebSocket ------------------
     createCommunityServer(server);
 
     const PORT = 3000;
