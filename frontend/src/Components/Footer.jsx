@@ -9,7 +9,7 @@ const Footer = () => {
         Made with ❤️ by Rajdip
       </div>
       <div className="flex flex-row items-center space-x-4 text-2xl">
-        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors">
+        <a href="https://www.instagram.com/rajdipsaha244/" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors">
           <FaInstagram />
         </a>
         <a href="mailto:rajdipsaha7697@gmail.com" className="hover:text-yellow-400 transition-colors">

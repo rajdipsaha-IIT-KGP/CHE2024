@@ -247,7 +247,7 @@ export default function App() {
 >
   Get Started
   
-  <span className="absolute top-0 left-0 w-16 h-full bg-white opacity-30 
+  <span className="hover-absolute top-0 left-0 w-16 h-full bg-white opacity-30 
                    transform -skew-x-20 
                    animate-[shine_2s_linear_infinite]">
   </span>
