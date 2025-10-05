@@ -240,12 +240,19 @@ export default function App() {
                 </p>
 
                 <div className="flex space-x-4 mt-4">
-                  <button
-                    onClick={() => handleNavigation("/signup")}
-                    className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 font-semibold transition-all"
-                  >
-                    Get Started
-                  </button>
+<button
+  onClick={() => handleNavigation("/signup")}
+  className="relative px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 
+             hover:from-blue-600 hover:to-blue-800 font-semibold text-white overflow-hidden"
+>
+  Get Started
+  
+  <span className="absolute top-0 left-0 w-16 h-full bg-white opacity-30 
+                   transform -skew-x-20 
+                   animate-[shine_2s_linear_infinite]">
+  </span>
+</button>
+
                   <button
                     onClick={() => handleNavigation("/about")}
                     className="px-6 py-3 rounded-lg border border-blue-500 text-blue-400 hover:text-white hover:bg-blue-600 font-semibold transition-all"

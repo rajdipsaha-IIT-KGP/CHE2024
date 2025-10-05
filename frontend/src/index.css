@@ -9,3 +9,11 @@ html, body, #root {
   color: white;          /* default text color */
   font-family: sans-serif;
 }
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(300%) skewX(-20deg);
+  }
+}
