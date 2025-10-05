@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { Toaster, toast } from 'react-hot-toast';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -84,7 +84,7 @@ const Signin = () => {
         </p>
       </div>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+      <Toaster position="top-right" autoClose={3000} />
     </div>
   );
 };

@@ -17,27 +17,53 @@ const Community = () => {
   }, []);
 
   const connectWebSocket = () => {
-    if (!email) return toast.error("Sign In first to continue");
+    if (!email) return toast.error("Sign in first to continue");
     setLoading(true);
 
     ws.current = new WebSocket("wss://che2024.onrender.com");
 
     ws.current.onopen = () => {
-      console.log("Connected to server ✅");
+      console.log("✅ Connected to server");
       setConnected(true);
       setLoading(false);
 
-      ws.current.send(JSON.stringify({ type: "join", username: email.split("@")[0] }));
+      toast.success("Connected to CHE 2024 Community!");
+
+      ws.current.send(
+        JSON.stringify({ type: "join", username: email.split("@")[0] })
+      );
     };
 
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setMessages((prev) => [...prev, { ...data, upvotes: 0, downvotes: 0,userVote:null }]);
+
+      // If it's a notification message, show toast instead of rendering it
+      if (data.type === "notification") {
+        toast(data.message, {
+          style: {
+            background: "#0f172a",
+            color: "#93c5fd",
+            border: "1px solid #3b82f6",
+          },
+          iconTheme: {
+            primary: "#60a5fa",
+            secondary: "#0f172a",
+          },
+        });
+        return;
+      }
+
+      // Otherwise add normal chat message
+      setMessages((prev) => [
+        ...prev,
+        { ...data, upvotes: 0, downvotes: 0, userVote: null },
+      ]);
     };
 
     ws.current.onclose = () => {
-      console.log("Disconnected from server ❌");
+      console.log("❌ Disconnected from server");
       setConnected(false);
+      toast.error("Disconnected from CHE 2024 Community");
     };
 
     ws.current.onerror = (err) => {
@@ -57,24 +83,53 @@ const Community = () => {
     setMessages((prev) =>
       prev.map((msg, i) => {
         if (i !== index) return msg;
-        if(msg.userVote === type) return msg; // Prevent multiple votes of same type
+        if (msg.userVote === type) return msg; // prevent double voting
 
         let upvotes = msg.upvotes || 0;
         let downvotes = msg.downvotes || 0;
-        
+
         if (msg.userVote === "upvote") upvotes = Math.max(0, upvotes - 1);
         if (msg.userVote === "downvote") downvotes = Math.max(0, downvotes - 1);
-      if (type === "upvote") upvotes += 1;
-      if (type === "downvote") downvotes += 1;
 
-      return { ...msg, upvotes, downvotes, userVote: type };
+        if (type === "upvote") upvotes += 1;
+        if (type === "downvote") downvotes += 1;
+
+        return { ...msg, upvotes, downvotes, userVote: type };
       })
     );
   };
 
   return (
     <div className="min-h-screen font-sans bg-gray-900 text-white relative">
-      <Toaster />
+      {/* Global toast theme */}
+      <Toaster
+        position="top-bottom"
+        toastOptions={{
+          style: {
+            background: "#1E293B",
+            color: "#E2E8F0",
+            borderRadius: "8px",
+            border: "1px solid #334155",
+          },
+          success: {
+            iconTheme: {
+              primary: "#3B82F6",
+              secondary: "#1E293B",
+            },
+          },
+          error: {
+            style: {
+              background: "#7F1D1D",
+              color: "#FEE2E2",
+            },
+            iconTheme: {
+              primary: "#F87171",
+              secondary: "#7F1D1D",
+            },
+          },
+        }}
+      />
+
       {!connected ? (
         <div className="flex justify-center items-center h-screen">
           <div className="w-full max-w-md p-10 bg-gray-800/90 backdrop-blur-lg rounded-3xl shadow-2xl z-10">
@@ -103,8 +158,8 @@ const Community = () => {
         </div>
       ) : (
         <>
-          {/* Chat Messages */}
-          <div className="h-[70vh] w-[90vw] mx-auto mt-4 rounded-lg  bg-gray-900 p-4 overflow-y-auto flex flex-col-reverse space-y-2">
+          {/* Chat messages section */}
+          <div className="h-[70vh] w-[90vw] mx-auto mt-4 rounded-lg bg-gray-900 p-4 overflow-y-auto flex flex-col-reverse space-y-2">
             {messages.length === 0 && (
               <p className="text-center text-gray-400 mt-40">
                 Messages will appear here
@@ -119,49 +174,48 @@ const Community = () => {
                 const isOwn = msg.username === email.split("@")[0];
 
                 return (
-                  <div key={originalIndex} className={`flex flex-col ${isOwn ? "items-end" : "items-start"}`}>
+                  <div
+                    key={originalIndex}
+                    className={`flex flex-col ${
+                      isOwn ? "items-end" : "items-start"
+                    }`}
+                  >
                     {/* Message Box */}
-                   <div
-  className={`p-3 rounded-lg transition-all duration-300 transform hover:scale-[1.02] max-w-[70%] break-words ${
-    msg.type === "notification"
-      ? "bg-yellow-600 text-black text-center italic self-center"
-      : isOwn
-      ? " bg-gray-900 text-white"
-      : "bg-gray-700 text-white"
-  }`}
->
-  {msg.type === "chat" ? (
-    <span>
-      <strong>{msg.username}:</strong> {msg.message}
-    </span>
-  ) : (
-    <em>{msg.message}</em>
-  )}
-</div>
+                    <div
+                      className={`p-3 rounded-lg transition-all duration-300 transform hover:scale-[1.02] max-w-[70%] break-words ${
+                        isOwn
+                          ? "bg-gray-800 text-white"
+                          : "bg-gray-700 text-white"
+                      }`}
+                    >
+                      <strong>{msg.username}:</strong> {msg.message}
+                    </div>
 
-                    {/* Upvote / Downvote below message */}
-                    {msg.type === "chat" && (
-                      <div className={`flex gap-4 mt-1 ${isOwn ? "justify-end" : "justify-start"}`}>
-                        <span
-                          className="flex items-center gap-1 cursor-pointer transition-transform duration-200 hover:scale-125"
-                          onClick={() => handleVote(originalIndex, "upvote")}
-                        >
-                          <FaThumbsUp /> {msg.upvotes || 0}
-                        </span>
-                        <span
-                          className="flex items-center gap-1 cursor-pointer transition-transform duration-200 hover:scale-125"
-                          onClick={() => handleVote(originalIndex, "downvote")}
-                        >
-                          <FaThumbsDown /> {msg.downvotes || 0}
-                        </span>
-                      </div>
-                    )}
+                    {/* Upvote / Downvote buttons */}
+                    <div
+                      className={`flex gap-4 mt-1 ${
+                        isOwn ? "justify-end" : "justify-start"
+                      }`}
+                    >
+                      <span
+                        className="flex items-center gap-1 cursor-pointer transition-transform duration-200 hover:scale-125"
+                        onClick={() => handleVote(originalIndex, "upvote")}
+                      >
+                        <FaThumbsUp /> {msg.upvotes || 0}
+                      </span>
+                      <span
+                        className="flex items-center gap-1 cursor-pointer transition-transform duration-200 hover:scale-125"
+                        onClick={() => handleVote(originalIndex, "downvote")}
+                      >
+                        <FaThumbsDown /> {msg.downvotes || 0}
+                      </span>
+                    </div>
                   </div>
                 );
               })}
           </div>
 
-          {/* Input Box */}
+          {/* Message input box */}
           <div className="w-[90vw] mx-auto mt-4 rounded-lg bg-[#202B3C] p-3 relative flex">
             <input
               type="text"
