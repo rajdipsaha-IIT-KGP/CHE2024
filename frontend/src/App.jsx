@@ -10,6 +10,7 @@ import { Typewriter } from "react-simple-typewriter";
 import PYQ from "./Components/Pyq";
 import About from "./Components/About";
 import Community from "./Components/Community";
+import Internship from "./Components/Internship";
 import Elective from "./Components/Elective";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -194,6 +195,12 @@ export default function App() {
           >
             Elective
           </li>
+           <li
+            onClick={() => handleNavigation("/internship-blogs")}
+            className="hover:bg-blue-600/20 px-3 py-2 rounded cursor-pointer text-center"
+          >
+            Internship Blogs
+          </li>
           <div className="border-t border-white/20 " />
           <li
             onClick={() => handleNavigation("/about")}
@@ -269,6 +276,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/elective" element={<Elective />} />
           <Route path="/community" element={<Community />} />
+          <Route path="/internship-blogs" element={<Internship />} />
         </Routes>
       </main>
 
