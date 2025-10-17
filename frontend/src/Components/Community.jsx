@@ -32,13 +32,13 @@ const Community = () => {
       ws.current.send(
         JSON.stringify({ type: "join", username: email.split("@")[0] })
       );
-    };
+    };//sending data to backend
 
-    ws.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+    ws.current.onmessage = (event) => {//messages coming from the backend
+      const data = JSON.parse(event.data);//data type can be updateMsg ,chat ,notification
       console.log("📩 Incoming:", data);
 
-      // ✅ handle notifications
+      //  handle notifications
       if (data.type === "notification") {
         toast(data.message, {
           style: {
@@ -54,7 +54,7 @@ const Community = () => {
         return;
       }
 
-      // ✅ handle message updates (like/dislike)
+      //  handle message updates (like/dislike)
       if (data.type === "updatedMsg") {
         setMessages((prev) =>
           prev.map((msg) =>
@@ -66,7 +66,7 @@ const Community = () => {
         return;
       }
 
-      // ✅ handle message history
+      //  handle message history
       if (data.type === "history") {
         const historyMsgs = data.message.map((msg) => ({
           username: msg.sender,
@@ -80,7 +80,7 @@ const Community = () => {
         return;
       }
 
-      // ✅ handle new chat messages
+      //  handle new chat messages
       if (data.type === "chat") {
         const newMsg = {
           username: data.sender,
@@ -95,7 +95,7 @@ const Community = () => {
     };
 
     ws.current.onclose = () => {
-      console.log("❌ Disconnected from server");
+      console.log(" Disconnected from server");
       setConnected(false);
       toast.error("Disconnected from CHE 2024 Community");
     };
