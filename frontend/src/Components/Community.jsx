@@ -3,6 +3,7 @@ import { FaPaperPlane, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 
+
 const Community = () => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -50,6 +51,10 @@ const Community = () => {
             secondary: "#0f172a",
           },
         });
+
+        if(data.type === "updatedMsg"){
+          setMessages((prev)=>prev.map(msg=>msg.messageID===data.messageID?{...msg,upvotes:data.likes,downvotes:data.dislikes}:msg))
+        }
         return;
       }
 
@@ -75,15 +80,19 @@ const Community = () => {
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
-    ws.current.send(JSON.stringify({ type: "chat", message: newMessage }));
+    ws.current.send(JSON.stringify({ type: "chat", message: newMessage,likes:0,dislikes:0 }));
     setNewMessage("");
   };
 
   const handleVote = (index, type) => {
+
+    ws.current.send(JSON.stringify({
+      type:"upvote"?"like":"dislike",
+    }))
     setMessages((prev) =>
       prev.map((msg, i) => {
         if (i !== index) return msg;
-        if (msg.userVote === type) return msg; // prevent double voting
+        if (msg.userVote === type) return msg; 
 
         let upvotes = msg.upvotes || 0;
         let downvotes = msg.downvotes || 0;
