@@ -3,7 +3,6 @@ import { FaPaperPlane, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 
-
 const Community = () => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -37,8 +36,9 @@ const Community = () => {
 
     ws.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log("📩 Incoming:", data);
 
-      // If it's a notification message, show toast instead of rendering it
+      // ✅ handle notifications
       if (data.type === "notification") {
         toast(data.message, {
           style: {
@@ -51,18 +51,47 @@ const Community = () => {
             secondary: "#0f172a",
           },
         });
-
-        if(data.type === "updatedMsg"){
-          setMessages((prev)=>prev.map(msg=>msg.messageID===data.messageID?{...msg,upvotes:data.likes,downvotes:data.dislikes}:msg))
-        }
         return;
       }
 
-      // Otherwise add normal chat message
-      setMessages((prev) => [
-        ...prev,
-        { ...data, upvotes: 0, downvotes: 0, userVote: null },
-      ]);
+      // ✅ handle message updates (like/dislike)
+      if (data.type === "updatedMsg") {
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.messageID === data.messageID
+              ? { ...msg, upvotes: data.likes, downvotes: data.dislikes }
+              : msg
+          )
+        );
+        return;
+      }
+
+      // ✅ handle message history
+      if (data.type === "history") {
+        const historyMsgs = data.message.map((msg) => ({
+          username: msg.sender,
+          messageID: msg._id,
+          message: msg.message,
+          upvotes: msg.likes || 0,
+          downvotes: msg.dislikes || 0,
+          userVote: null,
+        }));
+        setMessages(historyMsgs);
+        return;
+      }
+
+      // ✅ handle new chat messages
+      if (data.type === "chat") {
+        const newMsg = {
+          username: data.sender,
+          messageID: data.messageID,
+          message: data.message,
+          upvotes: data.likes || 0,
+          downvotes: data.dislikes || 0,
+          userVote: null,
+        };
+        setMessages((prev) => [...prev, newMsg]);
+      }
     };
 
     ws.current.onclose = () => {
@@ -80,19 +109,27 @@ const Community = () => {
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
-    ws.current.send(JSON.stringify({ type: "chat", message: newMessage,likes:0,dislikes:0 }));
+    ws.current.send(
+      JSON.stringify({ type: "chat", message: newMessage, likes: 0, dislikes: 0 })
+    );
     setNewMessage("");
   };
 
   const handleVote = (index, type) => {
+    const targetMsg = messages[index];
+    if (!targetMsg?.messageID) return;
 
-    ws.current.send(JSON.stringify({
-      type:"upvote"?"like":"dislike",
-    }))
+    ws.current.send(
+      JSON.stringify({
+        type: type === "upvote" ? "like" : "dislike",
+        messageID: targetMsg.messageID,
+      })
+    );
+
     setMessages((prev) =>
       prev.map((msg, i) => {
         if (i !== index) return msg;
-        if (msg.userVote === type) return msg; 
+        if (msg.userVote === type) return msg;
 
         let upvotes = msg.upvotes || 0;
         let downvotes = msg.downvotes || 0;
@@ -110,7 +147,6 @@ const Community = () => {
 
   return (
     <div className="min-h-screen font-sans bg-gray-900 text-white relative">
-      {/* Global toast theme */}
       <Toaster
         position="top-bottom"
         toastOptions={{
@@ -184,7 +220,7 @@ const Community = () => {
 
                 return (
                   <div
-                    key={originalIndex}
+                    key={msg.messageID || originalIndex}
                     className={`flex flex-col ${
                       isOwn ? "items-end" : "items-start"
                     }`}
