@@ -13,6 +13,7 @@ import Community from "./Components/Community";
 import Internship from "./Components/Internship";
 import Elective from "./Components/Elective";
 import Forgot from "./Components/Forgot"
+import Profile from "./Components/Profile"
 import toast, { Toaster } from "react-hot-toast";
 
 ;
@@ -260,6 +261,7 @@ export default function App() {
           <Route path="/community" element={<Community />} />
           <Route path="/internship-blogs" element={<Internship />} />
           <Route path="/forgot-password" element={<Forgot/>}/>
+          <Route path="/my-profile" element = {<Profile/>}/>
         </Routes>
       </main>
 

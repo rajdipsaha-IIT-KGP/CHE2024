@@ -69,6 +69,10 @@ app.post("/signup", async (req, res) => {
       return res.status(409).json({ message: "Email already registered" });
     }
 
+    const userExists2 =  await pool.query("SELECT * FROM users WHERE username = $1",[username])
+    if(userExists2.rows.length > 0)
+      return res.status(409).json({ message: "Username already taken" });
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await pool.query(
