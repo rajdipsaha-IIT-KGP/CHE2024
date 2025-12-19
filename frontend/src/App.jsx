@@ -12,6 +12,7 @@ import About from "./Components/About";
 import Community from "./Components/Community";
 import Internship from "./Components/Internship";
 import Elective from "./Components/Elective";
+import Forgot from "./Components/Forgot"
 import toast, { Toaster } from "react-hot-toast";
 
 ;
@@ -32,26 +33,7 @@ export default function App() {
   };
 
   // ✅ Show welcome info toast on page load
-  useEffect(() => {
-    toast.success(
-      "Test Sign In:\nEmail: rajdipsaha7697@gmail.com (pass: 1234)\nEmail: ARADHANA.MOTORPARTS@GMAIL.COM(all capital letters) (pass: 1234)\nYou can test Community with these accounts.\nNote: Project is under development 🚧",
-      {
-        duration: 9000,
-        style: {
-          background: "#0f172a",
-          color: "#e2e8f0",
-          border: "1px solid #3b82f6",
-          fontSize: "14px",
-          lineHeight: "1.4",
-        },
-        iconTheme: {
-          primary: "#60a5fa",
-          secondary: "#0f172a",
-        },
-      }
-    );
-  }, []);
-
+  
   const handleNavigation = (path) => {
     navigate(path);
     setSidebarOpen(false);
@@ -79,7 +61,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-gray-900 text-white overflow-x-hidden relative">
       {/* Global Hot Toast setup */}
       <Toaster
-        position="top-right"
+        position="bottom-left"
         toastOptions={{
           style: {
             background: "#1E293B",
@@ -277,6 +259,7 @@ export default function App() {
           <Route path="/elective" element={<Elective />} />
           <Route path="/community" element={<Community />} />
           <Route path="/internship-blogs" element={<Internship />} />
+          <Route path="/forgot-password" element={<Forgot/>}/>
         </Routes>
       </main>
 

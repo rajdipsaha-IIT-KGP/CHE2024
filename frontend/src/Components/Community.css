@@ -1,0 +1,9 @@
+@keyframes bounceIcon {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5) rotate(20deg); }
+  100% { transform: scale(1); }
+}
+
+.animate-bounce {
+  animation: bounceIcon 0.5s ease;
+}

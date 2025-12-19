@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { FaPaperPlane, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
+import likeSound from "../assets/like.mp3";
+import dislikeSound from "../assets/dislikes.mp3";
+import "./Community.css"; 
 
 const Community = () => {
   const [newMessage, setNewMessage] = useState("");
@@ -10,6 +13,10 @@ const Community = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const ws = useRef(null);
+
+  // Audio refs
+  const likeAudio = useRef(new Audio(likeSound));
+  const dislikeAudio = useRef(new Audio(dislikeSound));
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
@@ -23,7 +30,7 @@ const Community = () => {
     ws.current = new WebSocket("wss://che2024.onrender.com");
 
     ws.current.onopen = () => {
-      console.log("✅ Connected to server");
+      console.log(" Connected to server");
       setConnected(true);
       setLoading(false);
 
@@ -32,13 +39,13 @@ const Community = () => {
       ws.current.send(
         JSON.stringify({ type: "join", username: email.split("@")[0] })
       );
-    };//sending data to backend
+    };
 
-    ws.current.onmessage = (event) => {//messages coming from the backend
-      const data = JSON.parse(event.data);//data type can be updateMsg ,chat ,notification
-      console.log("📩 Incoming:", data);
+    ws.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Incoming:", data);
 
-      //  handle notifications
+      // Notifications
       if (data.type === "notification") {
         toast(data.message, {
           style: {
@@ -46,15 +53,12 @@ const Community = () => {
             color: "#93c5fd",
             border: "1px solid #3b82f6",
           },
-          iconTheme: {
-            primary: "#60a5fa",
-            secondary: "#0f172a",
-          },
+          iconTheme: { primary: "#60a5fa", secondary: "#0f172a" },
         });
         return;
       }
 
-      //  handle message updates (like/dislike)
+      // Update likes/dislikes
       if (data.type === "updatedMsg") {
         setMessages((prev) =>
           prev.map((msg) =>
@@ -66,7 +70,7 @@ const Community = () => {
         return;
       }
 
-      //  handle message history
+      // Chat history
       if (data.type === "history") {
         const historyMsgs = data.message.map((msg) => ({
           username: msg.sender,
@@ -80,7 +84,7 @@ const Community = () => {
         return;
       }
 
-      //  handle new chat messages
+      // New chat
       if (data.type === "chat") {
         const newMsg = {
           username: data.sender,
@@ -119,6 +123,7 @@ const Community = () => {
     const targetMsg = messages[index];
     if (!targetMsg?.messageID) return;
 
+
     ws.current.send(
       JSON.stringify({
         type: type === "upvote" ? "like" : "dislike",
@@ -126,6 +131,19 @@ const Community = () => {
       })
     );
 
+    // Play sound
+    if (type === "upvote") likeAudio.current.play();
+    if (type === "downvote") dislikeAudio.current.play();
+
+    // Animate icon
+    const iconId = `${targetMsg.messageID}-${type}`;
+    const iconEl = document.getElementById(iconId);
+    if (iconEl) {
+      iconEl.classList.add("animate-bounce");
+      setTimeout(() => iconEl.classList.remove("animate-bounce"), 500);
+    }
+
+    // Update state locally
     setMessages((prev) =>
       prev.map((msg, i) => {
         if (i !== index) return msg;
@@ -147,41 +165,13 @@ const Community = () => {
 
   return (
     <div className="min-h-screen font-sans bg-gray-900 text-white relative">
-      <Toaster
-        position="top-bottom"
-        toastOptions={{
-          style: {
-            background: "#1E293B",
-            color: "#E2E8F0",
-            borderRadius: "8px",
-            border: "1px solid #334155",
-          },
-          success: {
-            iconTheme: {
-              primary: "#3B82F6",
-              secondary: "#1E293B",
-            },
-          },
-          error: {
-            style: {
-              background: "#7F1D1D",
-              color: "#FEE2E2",
-            },
-            iconTheme: {
-              primary: "#F87171",
-              secondary: "#7F1D1D",
-            },
-          },
-        }}
-      />
-
+      <Toaster position="top-bottom" />
       {!connected ? (
         <div className="flex justify-center items-center h-screen">
           <div className="w-full max-w-md p-10 bg-gray-800/90 backdrop-blur-lg rounded-3xl shadow-2xl z-10">
             <h2 className="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
               CHE 2024 - Community Sign In
             </h2>
-
             <div className="space-y-4">
               <input
                 type="email"
@@ -190,7 +180,6 @@ const Community = () => {
                 value={email}
                 readOnly
               />
-
               <button
                 onClick={connectWebSocket}
                 disabled={loading}
@@ -203,53 +192,37 @@ const Community = () => {
         </div>
       ) : (
         <>
-          {/* Chat messages section */}
           <div className="h-[70vh] w-[90vw] mx-auto mt-4 rounded-lg bg-gray-900 p-4 overflow-y-auto flex flex-col-reverse space-y-2">
             {messages.length === 0 && (
               <p className="text-center text-gray-400 mt-40">
                 Messages will appear here
               </p>
             )}
-
             {messages
               .slice()
               .reverse()
               .map((msg, i) => {
                 const originalIndex = messages.length - 1 - i;
                 const isOwn = msg.username === email.split("@")[0];
-
                 return (
                   <div
                     key={msg.messageID || originalIndex}
-                    className={`flex flex-col ${
-                      isOwn ? "items-end" : "items-start"
-                    }`}
+                    className={`flex flex-col ${isOwn ? "items-end" : "items-start"}`}
                   >
-                    {/* Message Box */}
-                    <div
-                      className={`p-3 rounded-lg transition-all duration-300 transform hover:scale-[1.02] max-w-[70%] break-words ${
-                        isOwn
-                          ? "bg-gray-800 text-white"
-                          : "bg-gray-700 text-white"
-                      }`}
-                    >
+                    <div className={`p-3 rounded-lg max-w-[70%] break-words ${isOwn ? "bg-gray-800" : "bg-gray-700"}`}>
                       <strong>{msg.username}:</strong> {msg.message}
                     </div>
-
-                    {/* Upvote / Downvote buttons */}
-                    <div
-                      className={`flex gap-4 mt-1 ${
-                        isOwn ? "justify-end" : "justify-start"
-                      }`}
-                    >
+                    <div className={`flex gap-4 mt-1 ${isOwn ? "justify-end" : "justify-start"}`}>
                       <span
-                        className="flex items-center gap-1 cursor-pointer transition-transform duration-200 hover:scale-125"
+                        id={`${msg.messageID}-upvote`}
+                        className="flex items-center gap-1 cursor-pointer transition-transform duration-200"
                         onClick={() => handleVote(originalIndex, "upvote")}
                       >
                         <FaThumbsUp /> {msg.upvotes || 0}
                       </span>
                       <span
-                        className="flex items-center gap-1 cursor-pointer transition-transform duration-200 hover:scale-125"
+                        id={`${msg.messageID}-downvote`}
+                        className="flex items-center gap-1 cursor-pointer transition-transform duration-200"
                         onClick={() => handleVote(originalIndex, "downvote")}
                       >
                         <FaThumbsDown /> {msg.downvotes || 0}
@@ -260,7 +233,6 @@ const Community = () => {
               })}
           </div>
 
-          {/* Message input box */}
           <div className="w-[90vw] mx-auto mt-4 rounded-lg bg-[#202B3C] p-3 relative flex">
             <input
               type="text"
@@ -270,7 +242,6 @@ const Community = () => {
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               className="flex-1 rounded-2xl bg-[#22304E] text-white placeholder-gray-400 p-3 focus:outline-none"
             />
-
             <button
               onClick={sendMessage}
               className="ml-2 p-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white cursor-pointer transition-all duration-200"

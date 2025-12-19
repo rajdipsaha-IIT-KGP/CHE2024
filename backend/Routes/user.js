@@ -1,154 +1,61 @@
 // Routes/user.js
 const { Router } = require("express");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+const { Client } = require("pg");
 
-const { usermodel } = require("../db");
-const otpModel = require("../models/otpModel");
-let user;
 const userRouter = Router();
-const JWT_SECRET =  "rajdipsaha";
 
-// ------------------ Helper to send OTP email ------------------
-async function sendOtpEmail(toEmail, otp) {
+// ⚠️ move to env later
+const client = new Client({
+  host: "ep-weathered-brook-a4dlu9vp-pooler.us-east-1.aws.neon.tech",
+  port: 5432,
+  database: "neondb",
+  user: "neondb_owner",
+  password: "npg_ST2qt9KlZhnH",
+  ssl: { rejectUnauthorized: false }
+});
+
+// connect postgres ONCE
+client.connect()
+  .then(() => console.log("✅ Postgres connected"))
+  .catch(err => console.error("❌ Postgres error", err));
+
+
+// ✅ SIGNUP ROUTE
+userRouter.post("/signup", async (req, res) => {
   try {
-    
-    let transporter = nodemailer.createTransport({
-      host: "smtp.sendgrid.net",
-      port: 587,
-      auth: {
-        user: "apikey", 
-        pass: "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", 
-      },
-    });
+    const { username, email, password } = req.body;
 
-    await transporter.sendMail({
-      from: '"CHE 2024" <rajdipsaha7697@gmail.com>',
-      to: toEmail,
-      subject: "CHE 2024 - Your OTP Code",
-      text: `Hello ${user},
-
-Thank you for signing up for CHE 2024!
-
-Your One-Time Password (OTP) is:
-
-          ${otp}
-
-This OTP is valid for 10 minutes. Please do not share it with anyone.
-
-If you did not request this OTP, you can safely ignore this email.
-
-Welcome to CHE 2024, and we’re excited to have you on board!
-
-Best regards,
-The CHE 2024 Team
-`,
-    });
-
-    console.log("✅ OTP sent successfully to", toEmail);
-  } catch (err) {
-    console.error("❌ Error sending OTP:", err);
-  }
-}
-
-// ------------------ SEND OTP ------------------
-userRouter.post("/signup/send-otp", async (req, res) => {
-  try {
-    const { email, username, password } = req.body || {};
-    user = username;
-    if (!email || !username || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required"
+      });
     }
 
-    const existingUser = await usermodel.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "User already exists" });
+    const hashedPass = await bcrypt.hash(password, 10);
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const userQuery =
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)";
 
-    // remove old OTP for same email
-    await otpModel.deleteMany({ email });
+    await client.query(userQuery, [username, email, hashedPass]);
 
-    // store OTP + temp user data
-    await otpModel.create({
-      email,
-      otp,
-      expiresAt,
-      tempUserData: { email, username, password }
+    return res.status(201).json({
+      message: "Signup successful"
     });
 
-    // send OTP email
-    await sendOtpEmail(email, otp);
-
-    return res.status(200).json({ message: "OTP sent successfully" });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-});
+    console.error("Signup error:", err);
 
-// ------------------ VERIFY OTP & CREATE USER ------------------
-userRouter.post("/signup/verify-otp", async (req, res) => {
-  try {
-    const { email, otp } = req.body || {};
-    if (!email || !otp) return res.status(400).json({ message: "Email and OTP required" });
+    // duplicate email
+    if (err.code === "23505") {
+      return res.status(409).json({
+        message: "Email already exists"
+      });
+    }
 
-    const record = await otpModel.findOne({ email, otp });
-    if (!record) return res.status(400).json({ message: "Invalid OTP" });
-
-    if (record.expiresAt < new Date())
-      return res.status(400).json({ message: "OTP expired" });
-
-    const existingUser = await usermodel.findOne({ email: record.tempUserData.email });
-    if (existingUser) return res.status(400).json({ message: "User already exists" });
-
-    const hashedPassword = await bcrypt.hash(record.tempUserData.password, 10);
-
-    const newUser = await usermodel.create({
-      email: record.tempUserData.email,
-      username: record.tempUserData.username,
-      password: hashedPassword,
+    return res.status(500).json({
+      message: "Internal Server Error"
     });
-
-    // remove OTP after verification
-    await otpModel.deleteMany({ email });
-
-    const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: "2h" });
-
-    return res.status(200).json({
-      message: "User verified and created successfully",
-      token,
-      user: { id: newUser._id, username: newUser.username, email: newUser.email }
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-// ------------------ SIGNIN ------------------
-userRouter.post("/signin", async (req, res) => {
-  try {
-    const { email, password } = req.body || {};
-    if (!email || !password) return res.status(400).json({ message: "All fields required" });
-
-    const user = await usermodel.findOne({ email });
-    if (!user) return res.status(404).json({ message: "Account does not exist" });
-
-    const isValidPass = await bcrypt.compare(password, user.password);
-    if (!isValidPass) return res.status(400).json({ message: "Password is incorrect" });
-
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "2h" });
-
-    return res.status(200).json({
-      message: "User signed in successfully",
-      token,
-      user: { id: user._id, username: user.username, email: user.email }
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
