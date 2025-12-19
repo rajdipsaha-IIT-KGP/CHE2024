@@ -80,14 +80,16 @@ app.post("/signup", async (req, res) => {
       [username, email, hashedPassword]
     );
 
-    const token = jwt.sign(
-      { userId: result.rows[0].id, email },
+   const token = jwt.sign(
+      { userId: user.id, email },
       JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.status(201).json({
+    res.status(200).json({
       message: "User registered successfully",
+      username: user.username,
+      email:user.email,
       token,
     });
   } catch (err) {
@@ -130,6 +132,7 @@ app.post("/signin", async (req, res) => {
     res.status(200).json({
       message: "User signed in successfully",
       username: user.username,
+      email:user.email,
       token,
     });
   } catch (err) {
