@@ -124,7 +124,7 @@ app.post("/signin", async (req, res) => {
     );
 
     res.status(200).json({
-      message: "Login successful",
+      message: "User signed in successfully",
       username: user.username,
       token,
     });

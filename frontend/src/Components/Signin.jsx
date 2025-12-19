@@ -28,9 +28,7 @@ const Signin = () => {
         localStorage.setItem("userEmail", email);
         localStorage.setItem("token", res.data.token);
         
-      } else {
-        toast.error(res.data.message);
-      }
+      } 
     } catch (err) {
       console.error(err);
       toast.error("Invalid credentials");
