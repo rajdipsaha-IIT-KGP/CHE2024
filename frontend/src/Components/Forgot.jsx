@@ -19,7 +19,7 @@ const Forgot = () => {
       setLoading(true);
 
       const res = await axios.post(
-        'http://localhost:3000/forgot-password',
+        'https://che2024.onrender.com/forgot-password',
         {
           email,
           newPass: newPassword, 
