@@ -26,7 +26,7 @@ const Signup = () => {
       toast.success(res.data.message);
 
       // Save signup email (optional)
-      localStorage.setItem("signupEmail", email);
+      localStorage.setItem("email", email);
       if(res.data.token) localStorage.setItem("token", res.data.token);
 
       // Redirect to signin after short delay

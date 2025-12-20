@@ -61,7 +61,10 @@ const Profile = () => {
   };
 
   return (
+    <div>
+       <h1 className="text-5xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600 text-center">My Profile</h1>
     <div className="min-h-screen flex items-center justify-center ">
+     
       <ToastContainer />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
 
@@ -156,6 +159,9 @@ const Profile = () => {
         </div>
 
       </div>
+    </div>
+   
+
     </div>
   );
 };
