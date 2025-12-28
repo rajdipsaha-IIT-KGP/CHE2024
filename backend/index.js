@@ -168,3 +168,101 @@ app.post("/forgot-password", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+app.post("/change-email", async function (req, res) {
+  const { username, email, password } = req.body;
+
+  try {
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    const userResult = await pool.query(
+      "SELECT password FROM users WHERE username = $1",
+      [username]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        message: "No such user exists",
+      });
+    }
+
+    const hashedPassword = userResult.rows[0].password;
+
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Password mismatched",
+      });
+    }
+const already = await pool.query("SELECT * FROM users WHERE email = $1",[email])
+if(already.rows.length !== 0)
+  return res.status(401).json({
+message:"email aready registered user different email"})
+    await pool.query(
+      "UPDATE users SET email = $1 WHERE username = $2",
+      [email, username]
+    );
+
+    return res.status(200).json({
+      message: "Email updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
+
+app.post("/change-username", async function (req, res) {
+  const { username, email, password } = req.body;
+
+  try {
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    const userResult = await pool.query(
+      "SELECT password FROM users WHERE email = $1",
+      [email]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        message: "No such user exists",
+      });
+    }
+
+    const hashedPassword = userResult.rows[0].password;
+
+    const isMatch = await bcrypt.compare(password, hashedPassword);
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Password mismatched",
+      });
+    }
+const already = await pool.query("SELECT * FROM users WHERE username = $1",[username])
+if(already.rows.length !== 0)
+  return res.status(401).json({
+message:"Username aready registered user different username"})
+    await pool.query(
+      "UPDATE users SET username = $1 WHERE email = $2",
+      [username, email]
+    );
+
+    return res.status(200).json({
+      message: "Username updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});

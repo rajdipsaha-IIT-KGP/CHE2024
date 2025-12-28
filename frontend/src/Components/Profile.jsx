@@ -24,10 +24,10 @@ const Profile = () => {
 
     try {
       setLoadingEmail(true);
-      await axios.post("/api/change-email", {
+      await axios.post("https://che2024.onrender.com/change-email", {
         username,
         password: passwordEmail,
-        newEmail,
+        email:newEmail,
       });
       toast.success("Email updated successfully");
       setNewEmail("");
@@ -46,10 +46,10 @@ const Profile = () => {
 
     try {
       setLoadingUsername(true);
-      await axios.post("/api/change-username", {
+      await axios.post("https://che2024.onrender.com/change-username", {
         email,
         password: passwordUsername,
-        newUsername,
+        username:newUsername,
       });
       toast.success("Username updated successfully");
       setNewUsername("");
