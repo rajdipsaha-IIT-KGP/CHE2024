@@ -1,4 +1,3 @@
-// index.js
 const express = require("express");
 const { Pool } = require("pg");
 const bcrypt = require("bcryptjs");
@@ -9,13 +8,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-/* ================= ENV ================= */
+const DATABASE_URL =
+  "postgresql://neondb_owner:npg_ST2qt9KlZhnH@ep-weathered-brook-a4dlu9vp-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require";
 
 
-const DATABASE_URL = process.env.DATABASE_URL;
 const JWT_SECRET = "MY SECRET PASS";
 
-/* ================= DATABASE ================= */
+
 
 const pool = new Pool({
   connectionString: DATABASE_URL,
@@ -29,13 +28,12 @@ pool.on("connect", () => {
 });
 
 pool.on("error", (err) => {
-  console.error("Unexpected Postgres error", err);
+  console.error("Postgres error:", err);
 });
 
 /* ================= SERVER ================= */
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
@@ -51,7 +49,6 @@ app.post("/signup", async (req, res) => {
   }
 
   try {
-    // Check email
     const emailExists = await pool.query(
       "SELECT 1 FROM users WHERE email = $1",
       [email]
@@ -60,7 +57,6 @@ app.post("/signup", async (req, res) => {
       return res.status(409).json({ message: "Email already registered" });
     }
 
-    // Check username
     const usernameExists = await pool.query(
       "SELECT 1 FROM users WHERE username = $1",
       [username]
@@ -69,10 +65,8 @@ app.post("/signup", async (req, res) => {
       return res.status(409).json({ message: "Username already taken" });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert user
     const result = await pool.query(
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id",
       [username, email, hashedPassword]
@@ -80,14 +74,11 @@ app.post("/signup", async (req, res) => {
 
     const userId = result.rows[0].id;
 
-    // JWT
-    const token = jwt.sign(
-      { userId, email },
-      JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = jwt.sign({ userId, email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "User registered successfully",
       username,
       email,
@@ -96,9 +87,10 @@ app.post("/signup", async (req, res) => {
 
   } catch (err) {
     console.error("Signup error:", err);
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
 /* ---------- SIGN IN ---------- */
 app.post("/signin", async (req, res) => {
