@@ -266,3 +266,19 @@ message:"Username aready registered user different username"})
     });
   }
 });
+app.get("/courses", async (req, res) => {
+  const result = await pool.query("SELECT * FROM courses");
+  res.json(result.rows);
+});
+
+/* ---------------- LECTURES ---------------- */
+app.get("/courses/:id/lectures", async (req, res) => {
+  const { id } = req.params;
+
+  const result = await pool.query(
+    "SELECT * FROM lectures WHERE course_id = $1 ORDER BY lecture_number",
+    [id]
+  );
+
+  res.json(result.rows);
+});

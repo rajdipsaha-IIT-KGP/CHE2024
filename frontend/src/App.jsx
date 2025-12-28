@@ -17,7 +17,7 @@ import Internship from "./Components/Internship";
 import Elective from "./Components/Elective";
 import Forgot from "./Components/Forgot";
 import Profile from "./Components/Profile";
-
+import Study from "./Components/Study";
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -135,7 +135,7 @@ export default function App() {
             ["Home", "/"],
             ["PYQ Archive", "/pyq"],
             ["Community", "/community"],
-            ["Study Material", "/material"],
+            ["Study Material", "/study"],
             ["Elective", "/elective"],
             ["Internship Blogs", "/internship-blogs"],
             ["About Us", "/about"],
@@ -223,6 +223,7 @@ export default function App() {
           <Route path="/internship-blogs" element={<Internship />} />
           <Route path="/forgot-password" element={<Forgot />} />
           <Route path="/my-profile" element={<Profile />} />
+          <Route path="/study" element={<Study/>} />
         </Routes>
       </main>
 
