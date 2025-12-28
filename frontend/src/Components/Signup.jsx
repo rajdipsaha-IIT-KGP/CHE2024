@@ -74,13 +74,17 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button
-            onClick={handleSignup}
-            disabled={loading}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 transition-all duration-300 font-semibold text-white disabled:opacity-50 cursor-pointer"
-          >
-            {loading ? "Signing Up..." : "Sign Up"}
-          </button>
+           <button
+  onClick={handleSignup}
+  disabled={loading}
+  className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 disabled:opacity-50 flex items-center justify-center"
+>
+  {loading ? (
+    <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+  ) : (
+    "Sign Up"
+  )}
+</button>
 
           <p className="text-center text-gray-300 mt-6">
             Already have an account?{' '}

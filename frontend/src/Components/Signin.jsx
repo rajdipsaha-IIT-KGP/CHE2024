@@ -73,13 +73,18 @@ const Signin = () => {
   </span>
 </div>
 
-          <button
-            onClick={SignIn}
-            disabled={loading}
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 disabled:opacity-50"
-          >
-            {loading ? "Signing In..." : "Sign In"}
-          </button>
+         <button
+  onClick={SignIn}
+  disabled={loading}
+  className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 disabled:opacity-50 flex items-center justify-center"
+>
+  {loading ? (
+    <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+  ) : (
+    "Sign In"
+  )}
+</button>
+
         </div>
 
         <p className="text-center text-gray-300 mt-6">
