@@ -32,7 +32,7 @@ const Internship = () => {
           Download the complete internship guide for CHE 2025.
         </p>
         <a
-          href="/INTERNPEDIA_2025.pdf" 
+          href="https://che2024.onrender.com/public/INTERNPEDIA_2025.pdf" 
           download = "INTERNPEDIA_2025.pdf"
           className="flex items-center px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-semibold transition-all cursor-pointer justify-center"
         >
