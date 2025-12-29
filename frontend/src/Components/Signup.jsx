@@ -18,6 +18,7 @@ const Signup = () => {
     }
 
     try {
+      localStorage.clear();
       setLoading(true);
       const res = await axios.post("https://che2024.onrender.com/signup", {
         email, username, password 

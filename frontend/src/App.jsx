@@ -18,6 +18,8 @@ import Elective from "./Components/Elective";
 import Forgot from "./Components/Forgot";
 import Profile from "./Components/Profile";
 import Study from "./Components/Study";
+import CPC from "./Topics/CPC";
+
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -224,6 +226,7 @@ export default function App() {
           <Route path="/forgot-password" element={<Forgot />} />
           <Route path="/my-profile" element={<Profile />} />
           <Route path="/study" element={<Study/>} />
+          <Route path="/study/cpc" element={<CPC/>} />
         </Routes>
       </main>
 
