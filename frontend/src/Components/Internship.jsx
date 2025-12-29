@@ -1,6 +1,7 @@
 import React from "react";
 import { Typewriter } from "react-simple-typewriter";
 import { FaDownload } from "react-icons/fa";
+import { FaFilePdf } from "react-icons/fa";
 
 const Internship = () => {
   return (
@@ -23,7 +24,7 @@ const Internship = () => {
       {/* PDF DOWNLOAD CARD */}
       <div className="group relative bg-gray-800 border border-gray-700 rounded-2xl p-6
                        cursor-pointer transition-all duration-300
-                       hover:scale-105 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/20">
+                       hover:scale-105 hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col items-center">
 
         <h2 className="text-2xl font-semibold mb-4 text-center">
           Internpedia 2025
@@ -31,13 +32,21 @@ const Internship = () => {
         <p className="text-gray-300 mb-6 text-center">
           Download the complete internship guide for CHE 2025.
         </p>
-        <a
-          href="https://che2024.onrender.com/public/INTERNPEDIA_2025.pdf" 
-          download = "INTERNPEDIA_2025.pdf"
-          className="flex items-center px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-semibold transition-all cursor-pointer justify-center"
-        >
-          <FaDownload className="mr-2" /> Download PDF
-        </a>
+     <button
+  onClick={() =>
+    window.open(
+      "https://che2024.onrender.com/public/INTERNPEDIA_2025.pdf",
+      "_blank"
+    )
+  }
+  className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 
+             hover:bg-blue-600 rounded-lg text-white 
+             font-semibold transition-all cursor-pointer"
+>
+  <FaFilePdf className="text-xl text-red-500" />
+  Open PDF
+</button>
+
       </div>
 
     </div>
