@@ -16,12 +16,12 @@ export default function CPC() {
       videoId: "pVJlJWdAyWs",
     },
     {
-      title: "CPC/ Lecture 05 Conversion of units"
+      title: " Lecture 05 Conversion of units"
 ,
       videoId: "4EWmB9JVcBo",
     },
     {
-      title: "CPC Lecture 06-08 Empirical Equations Conversion Temperature",
+      title: "Lecture 06-08 Empirical Equations Conversion Temperature",
 
       videoId: "7X3LNoSydQc",
     },
