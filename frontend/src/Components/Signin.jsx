@@ -27,6 +27,9 @@ const Signin = () => {
       if (res.data.message === "User signed in successfully") {
         toast.success(res.data.message);
         localStorage.setItem("email", email);
+        localStorage.setItem("username", res.data.username);
+       
+
         localStorage.setItem("token", res.data.token);
         
       } 

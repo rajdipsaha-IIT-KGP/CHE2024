@@ -28,6 +28,7 @@ const Signup = () => {
 
       // Save signup email (optional)
       localStorage.setItem("email", email);
+      localStorage.setItem("username", username);
       if(res.data.token) localStorage.setItem("token", res.data.token);
 
       // Redirect to signin after short delay

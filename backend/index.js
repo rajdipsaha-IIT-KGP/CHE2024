@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+app.use("/public", express.static("public"));
 const DATABASE_URL =
   "postgresql://neondb_owner:npg_ST2qt9KlZhnH@ep-weathered-brook-a4dlu9vp-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require";
 
